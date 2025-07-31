@@ -1,5 +1,6 @@
 import express from "express";
 const app = express();
+import cors from "cors";
 // Gloable auth routes ho (login,registe,etc)
 import authRouter from "./routes/globals/auth/auth.Route";
 // institue ko related routers haru import garay ko ho
@@ -8,14 +9,21 @@ import courseRouter from "./routes/institute/course/course.Route";
 import routerCategory from "./routes/institute/category/category.Route";
 import routerStudent from "./routes/institute/stundent/student.Route";
 import routerTeacher from "./routes/institute/teacher/teacher.Route";
-
-//teacher related router haru  import garay ko ho
-import teacherRoute from "./routes/teacher/teacher.Route";
 // yo chai middleware for parsing request ko lagai ho
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// cors config
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
+
 // auth api ho jun chai gloabal api ho
-app.use("/api", authRouter);
+app.use("/api/auth", authRouter);
+//teacher related router haru  import garay ko ho
+import teacherRoute from "./routes/teacher/teacher.Route";
 
 // institute ko api
 app.use("/api/institute", instituteRouter);

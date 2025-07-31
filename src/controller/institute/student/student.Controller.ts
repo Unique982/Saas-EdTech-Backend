@@ -1,13 +1,17 @@
 import { Response } from "express";
 import { IExtendedRequest } from "../../../middleware/type";
 import sequelize from "../../../database/connection";
+import { QueryTypes } from "sequelize";
 
 class Studentcontroller {
   static getStudent = async (req: IExtendedRequest, res: Response) => {
     const instituteNumber = req.user?.currentInstituteNumber;
 
     const students = await sequelize.query(
-      `SELECT * FROM student_${instituteNumber}`
+      `SELECT * FROM student_${instituteNumber}`,
+      {
+        type: QueryTypes.SELECT,
+      }
     );
     res
       .status(200)

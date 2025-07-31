@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import Middleware from "../../../middleware/middleware";
-import TeacherController from "../../../controller/institute/teacher/teacherController";
+import TeacherController from "../../../controller/institute/teacher/teacher.Controller";
 import asyncErrorHandler from "../../../services/asyncErrorHandler";
 import upload from "../../../middleware/multerUpload";
 const routerTeacher: Router = express.Router();

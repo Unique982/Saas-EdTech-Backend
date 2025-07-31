@@ -3,6 +3,7 @@ import sequelize from "../../database/connection";
 import { QueryTypes } from "sequelize";
 import bcrypt from "bcrypt";
 import generaterJWTTOken from "../../services/generateJWTToken";
+import { IExtendedRequest } from "../../middleware/type";
 // inteface ho
 interface ITeacherData {
   id: string;

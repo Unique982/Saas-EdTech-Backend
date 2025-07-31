@@ -13,13 +13,16 @@ class CourseController {
       courseDescription,
       courseDuration,
       courseLevel,
+      teacherId,
+      categoryId,
     } = req.body;
     if (
       !courseName ||
       !coursePrice ||
       !courseDescription ||
       !courseDuration ||
-      !courseLevel
+      !courseLevel ||
+      !categoryId
     ) {
       return res.status(400).json({ message: "Please Provide all field " });
     }
@@ -27,7 +30,7 @@ class CourseController {
     const courseThumbnail = req.file ? req.file.path : null;
 
     const returnedData = await sequelize.query(
-      `INSERT INTO course_${instituteNumber}(courseName,coursePrice,courseDescription, courseDuration, courseLevel,courseThumbnail) VALUES(?,?,?,?,?,?)`,
+      `INSERT INTO course_${instituteNumber}(courseName,coursePrice,courseDescription, courseDuration, courseLevel,courseThumbnail,teacherId,categoryId) VALUES(?,?,?,?,?,?,?,?)`,
       {
         replacements: [
           courseName,
@@ -35,7 +38,9 @@ class CourseController {
           courseDescription,
           courseDuration,
           courseLevel,
-          courseThumbnail || "https://uniqueneupane.com/image/hello.png",
+          courseThumbnail,
+          teacherId,
+          categoryId,
         ],
       }
     );

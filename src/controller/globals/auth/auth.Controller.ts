@@ -41,9 +41,9 @@ class AuthController {
         email: email,
         password: bcrypt.hashSync(password, 12),
       });
-      res.json({ message: "new added succssfully" });
+      res.status(201).json({ message: "new added succssfully" });
     } catch (err) {
-      res.json({ message: "somthing wrong" });
+      res.status(400).json({ message: "somthing wrong" });
     }
   }
   // login flow
@@ -86,7 +86,11 @@ class AuthController {
       //   expiresIn: "7d",
       // });
       const token = generaterJWTTOken({ id: existUser.id });
-      res.status(200).json({ message: "Login successfully!", token });
+      // const token = generaterJWTTOken({ id: existUser.id });
+      res.status(200).json({
+        message: "Login successfully!",
+        data: { token: token, username: existUser.username },
+      });
     } catch (err) {
       res.status(400).json({ message: "Something wrong" });
     }

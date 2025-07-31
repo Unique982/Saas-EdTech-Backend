@@ -14,7 +14,8 @@ class TeacherController {
       teacherName,
       teacherPhoneNumber,
       teacherEmail,
-      teacherExperties,
+      teacherAddress,
+      teacherExperience,
       salary,
       joinedDate,
       courseId,
@@ -24,7 +25,8 @@ class TeacherController {
       !teacherName ||
       !teacherPhoneNumber ||
       !teacherEmail ||
-      !teacherExperties ||
+      !teacherAddress ||
+      !teacherExperience ||
       !salary ||
       !joinedDate
     ) {
@@ -34,18 +36,21 @@ class TeacherController {
     // password generatad function
     const data = generatedRandomPassword(teacherName);
     await sequelize.query(
-      `INSERT INTO teacher_${institueNumber}(teacherName,teacherPhoneNumber,teacherEmail,teacherExperties,salary,joinedDate,teacherPhoto,teacherPassword,courseI) VALUES(?,?,?,?,?,?,?,?)`,
+      `INSERT INTO teacher_${institueNumber}(teacherName,teacherPhoneNumber,teacherEmail,teacherExperience,teacherAddress,salary,joinedDate,teacherPhoto,teacherPassword,	teacherInstituteNumber,courseId) VALUES(?,?,?,?,?,?,?,?,?,?,?)`,
       {
         type: QueryTypes.INSERT,
         replacements: [
           teacherName,
           teacherPhoneNumber,
           teacherEmail,
-          teacherExperties,
+          teacherExperience,
+          teacherAddress,
           salary,
           joinedDate,
           teacherPhoto,
           data.hashedVersion,
+          institueNumber,
+          courseId,
         ],
       }
     );
@@ -67,8 +72,60 @@ class TeacherController {
     // sent email
     const mailInformation = {
       to: teacherEmail,
+
       subject: "Welcom to teacher our saas project2!",
-      text: `Welcome your <b>Email:</b> <span>${teacherEmail}</span>,<br> <B>Password:</b><span>${data.planVersion}</span>`,
+      text: `<div class="bg-gray-100 py-10">
+  <div class="max-w-xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+    <!-- Header -->
+    <div class="bg-blue-600 text-white px-6 py-4">
+      <h1 class="text-xl font-bold">Welcome to Our Institute</h1>
+    </div>
+
+    <!-- Body -->
+    <div class="px-6 py-4 text-gray-800">
+      <p class="text-base mb-4">
+        Hello <strong>${teacherName}</strong>,
+      </p>
+
+      <p class="mb-4">
+        We are pleased to inform you that you have been successfully registered as a new teacher at our institute.
+        Below are your login details:
+      </p>
+
+      <ul class="mb-4 text-sm list-disc pl-5 space-y-1">
+        <li><strong>Email:</strong> ${teacherEmail}</li>
+        <li><strong>Password:</strong> ${data.planVersion}</li>
+        <li><strong>Institute Number:</strong> ${institueNumber}</li>
+      </ul>
+
+      <!-- Login Button -->
+      <div class="text-center mt-6">
+        <a
+          href="http://your-login-url.com"
+          class="inline-block bg-blue-600 text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-blue-700 transition duration-300"
+          target="_blank"
+        >
+          Login Now
+        </a>
+      </div>
+
+      <p class="mt-6 mb-4 text-sm">
+        If you have any questions, feel free to contact us.
+      </p>
+
+      <p class="text-sm text-gray-500">
+        This is an automated email. Please do not reply.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-gray-100 px-6 py-4 text-center text-sm text-gray-600">
+      &copy; 2025 Unique Institute Solution. All rights reserved.
+    </div>
+  </div>
+</div>
+
+      `,
     };
     await sendMail(mailInformation);
     res.status(200).json({ message: "Teacher added successfully!" });
@@ -120,7 +177,8 @@ class TeacherController {
       teacherName,
       teacherPhoneNumber,
       teacherEmail,
-      teacherExperties,
+      teacherExperience,
+      teacherAddress,
       salary,
       joinedDate,
       courseId,
@@ -130,7 +188,8 @@ class TeacherController {
       !teacherName ||
       !teacherPhoneNumber ||
       !teacherEmail ||
-      !teacherExperties ||
+      !teacherExperience ||
+      !teacherAddress ||
       !salary ||
       !joinedDate
     ) {
@@ -139,14 +198,15 @@ class TeacherController {
     const teacherPhoto = req.file ? req.file.path : "https://uniqe.png";
     // password generatad function
     await sequelize.query(
-      `UPDATE teacher_${institueNumber} SET teacherName=?,teacherPhoneNumber=?,teacherEmail=?,teacherExperties=?,salary=?,joinedDate=?,teacherPhoto=?,courseId=? WHERE id =?`,
+      `UPDATE teacher_${institueNumber} SET teacherName=?,teacherPhoneNumber=?,teacherEmail=?,teacherExperties=?,teacherAddress=?,salary=?,joinedDate=?,teacherPhoto=?,courseId=? WHERE id =?`,
       {
         type: QueryTypes.UPDATE,
         replacements: [
           teacherName,
           teacherPhoneNumber,
           teacherEmail,
-          teacherExperties,
+          teacherExperience,
+          teacherAddress,
           salary,
           joinedDate,
           teacherPhoto,
