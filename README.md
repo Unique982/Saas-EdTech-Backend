@@ -59,6 +59,6 @@ If this project meets your requirements and you want to discuss or use it:
 📧 Email: uniqueneupane153@gmail.com
 
 🌐 Portfolio/Website: www.khemrajneupane.com.np
-🔗 GitHub: 
+🔗 GitHub: https://github.com/Unique982/Saas-EdTech-Backend.git
 Feel free to reach out for collaboration, customization, or deployment support.
 ```
