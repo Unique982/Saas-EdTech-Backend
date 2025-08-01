@@ -57,6 +57,24 @@ class Studentcontroller {
   };
 
   // delete student
-  static deleteStudent = async (req: IExtendedRequest, res: Response) => {};
+  static deleteStudent = async (req: IExtendedRequest, res: Response) => {
+    const instituteNumber = req.user?.currentInstituteNumber;
+    const studentId = req.params.id;
+    const [studentData] = await sequelize.query(
+      `SELECT * FROM student_${instituteNumber} WHERE id = ?`,
+      { replacements: [studentId] }
+    );
+    if (studentData.length == 0) {
+      return res.status(404).json({ message: "no student with that id" });
+    }
+    await sequelize.query(
+      `DELETE FROM student_${instituteNumber} WHERE id= ?`,
+      {
+        replacements: [studentId],
+      }
+    );
+    res.status(200).json({ message: "student delete successfully" });
+  };
 }
+
 export default Studentcontroller;

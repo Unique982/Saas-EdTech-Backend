@@ -31,4 +31,11 @@ routerStudent
     asyncErrorHandler(StudentController.addStudent)
   );
 
+routerStudent
+  .route("/:id")
+  .delete(
+    Middleware.isLoggedIn,
+    asyncErrorHandler(StudentController.deleteStudent)
+  );
+
 export default routerStudent;
