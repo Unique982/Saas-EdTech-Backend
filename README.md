@@ -28,7 +28,7 @@ DB_PORT =
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/saas-backend.git
+git clone https://github.com/Unique982/Saas-EdTech-Backend.git
 cd saas-backend
 ```
 ### 2.Run the development server
@@ -62,3 +62,4 @@ If this project meets your requirements and you want to discuss or use it:
 🔗 GitHub: https://github.com/Unique982/Saas-EdTech-Backend.git
 Feel free to reach out for collaboration, customization, or deployment support.
 ```
+
