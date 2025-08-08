@@ -9,6 +9,7 @@ import courseRouter from "./routes/institute/course/course.Route";
 import routerCategory from "./routes/institute/category/category.Route";
 import routerStudent from "./routes/institute/stundent/student.Route";
 import routerTeacher from "./routes/institute/teacher/teacher.Route";
+
 // yo chai middleware for parsing request ko lagai ho
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -24,6 +25,8 @@ app.use(
 app.use("/api/auth", authRouter);
 //teacher related router haru  import garay ko ho
 import teacherRoute from "./routes/teacher/teacher.Route";
+import chapterRoute from "./routes/teacher/course/chapter/course-chapter.Route";
+import lessonsRoute from "./routes/teacher/course/lesson/course-lesson.Route";
 
 // institute ko api
 app.use("/api/institute", instituteRouter);
@@ -37,5 +40,10 @@ app.use("/api/institute/student", routerStudent);
 app.use("/api/institute/teacher", routerTeacher);
 
 // aba chai teacher wala api haru
-app.use("/api/teacher", teacherRoute);
+app.use("/api/teacher/login", teacherRoute);
+
+// teacher la add garna course ko chapter
+app.use("/api/teacher/course", chapterRoute);
+// teacher la chapter ma lesson add
+app.use("/app/teacher/course", lessonsRoute);
 export default app;

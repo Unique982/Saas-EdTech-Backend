@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../database/models/user.Model";
-import { IExtendedRequest } from "./type";
+import { IExtendedRequest, UserRole } from "./type";
 
 class Middleware {
   static async isLoggedIn(
@@ -27,7 +27,7 @@ class Middleware {
           res.status(403).json({ message: "Token invalid vayo" });
         } else {
           const userData = await User.findByPk(resultaayo.id, {
-            attributes: ["id", "currentInstituteNumber"],
+            attributes: ["id", "currentInstituteNumber", "role"],
           });
 
           if (!userData) {
@@ -44,5 +44,21 @@ class Middleware {
       console.log(err);
     }
   }
+
+  static redrictTo = (...role: UserRole[]) => {
+    // array form ma data basxa ["teacher","student","institute"]
+    return (req: IExtendedRequest, res: Response, next: NextFunction) => {
+      // requesting user ko role k xa tyoe liney ani parameter ma pass garna
+      let UserRole = req.user?.role as UserRole;
+      if (role.includes(UserRole)) {
+        // filter gray ko ho include ma la chai array ma tyo data xa ki nai vana rw check garxa
+        next();
+      } else {
+        res
+          .status(403)
+          .json({ message: "invalid, you dont have acces tothis" });
+      }
+    };
+  };
 }
 export default Middleware;

@@ -41,7 +41,14 @@ class LoginSystem {
         id: teacherData[0].id,
         institueNumber: teacherInstituetNumber,
       });
-      res.status(200).json({ message: "Teacher login successfully!", token });
+      res.status(200).json({
+        message: "Teacher login successfully!",
+        data: {
+          teacherToken: token,
+          teacherInstituetNumber,
+          teacherEmail,
+        },
+      });
     }
   };
 }

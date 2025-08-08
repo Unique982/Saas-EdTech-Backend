@@ -1,4 +1,5 @@
 import { Table, Column, Model, DataType } from "sequelize-typescript";
+import { UserRole } from "../../middleware/type";
 
 @Table({
   tableName: "users",
@@ -24,17 +25,16 @@ class User extends Model {
     type: DataType.STRING,
     unique: true,
   })
-  declare currentInstituteNumber: string
+  declare currentInstituteNumber: string;
   @Column({
-    type:DataType.STRING,
-    unique:true,
+    type: DataType.STRING,
+    unique: true,
   })
-
   declare password: string;
   @Column({
     type: DataType.ENUM("teacher", "institute", "super-admin", "student"),
     defaultValue: "student",
   })
-  declare role: string;
+  declare role: UserRole;
 }
 export default User;

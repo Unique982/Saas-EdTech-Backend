@@ -138,6 +138,31 @@ class InstituteController {
     });
     next();
   }
+
+  static async createChapterTable(
+    req: IExtendedRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    const institueNumber = req?.user?.currentInstituteNumber;
+    await sequelize.query(`CREATE TABLE IF NOT EXISTS course_chapter_${institueNumber}(id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),chapterName VARCHAR(100) NOT NULL, chapterDuration VARCHAR(100), chapterLevel ENUM('beginner','intermediate','advance')NOT NULL,courseId VARCHAR(36) NOT NULL REFERENCES course_${institueNumber}(id),createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)`);
+    next();
+  }
+
+  static createChapterLessonTable = async (
+    req: IExtendedRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const instituteNumber = req.user?.currentInstituteNumber;
+    await sequelize.query(
+      `CREATE TABLE IF NOT EXISTS chapter_lesson_${instituteNumber}(id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),lessonName VARCHAR(100) NOT NULL, lessonDescription TEXT NOT NULL, lessonVideoURL VARCHAR(100),lessonThumbnailURL VARCHAR(100),chapterId VARCHAR(36) NOT NULL REFERENCES course_chapter_${instituteNumber}(id),createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)`
+    );
+    next();
+  };
+
   // category table
   static async createCategoryTable(
     req: IExtendedRequest,

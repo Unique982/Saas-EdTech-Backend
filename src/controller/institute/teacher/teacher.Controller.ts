@@ -135,7 +135,7 @@ class TeacherController {
   static getTeachers = async (req: IExtendedRequest, res: Response) => {
     const institueNumber = req.user?.currentInstituteNumber;
     const teachers = await sequelize.query(
-      `SELECT * FROM teacher_${institueNumber}`,
+      `SELECT t.*, c.courseName FROM teacher_${institueNumber} AS t JOIN course_${institueNumber} AS c ON t.courseId = c.id`,
       {
         type: QueryTypes.SELECT,
       }
