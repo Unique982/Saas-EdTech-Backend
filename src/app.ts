@@ -28,6 +28,9 @@ import teacherRoute from "./routes/teacher/teacher.Route";
 import chapterRoute from "./routes/teacher/course/chapter/course-chapter.Route";
 import lessonsRoute from "./routes/teacher/course/lesson/course-lesson.Route";
 
+// Student related router
+import studentInstituteRouter from "./routes/student/institute/student-institute.Route";
+
 // institute ko api
 app.use("/api/institute", instituteRouter);
 // institute ko cousre api jun chau institute la course management garxa
@@ -46,4 +49,8 @@ app.use("/api/teacher/login", teacherRoute);
 app.use("/api/teacher/course", chapterRoute);
 // teacher la chapter ma lesson add
 app.use("/app/teacher/course", lessonsRoute);
+
+// student related
+app.use("/api/student", studentInstituteRouter);
+
 export default app;
