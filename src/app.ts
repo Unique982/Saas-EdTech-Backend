@@ -26,10 +26,11 @@ app.use("/api/auth", authRouter);
 //teacher related router haru  import garay ko ho
 import teacherRoute from "./routes/teacher/teacher.Route";
 import chapterRoute from "./routes/teacher/course/chapter/course-chapter.Route";
-import lessonsRoute from "./routes/teacher/course/lesson/course-lesson.Route";
+import lessonRoute from "./routes/teacher/course/lesson/course-lesson.Route";
 
 // Student related router
 import studentInstituteRouter from "./routes/student/institute/student-institute.Route";
+import studentCart from "./routes/student/cart/student-cart.Route";
 
 // institute ko api
 app.use("/api/institute", instituteRouter);
@@ -48,9 +49,11 @@ app.use("/api/teacher/login", teacherRoute);
 // teacher la add garna course ko chapter
 app.use("/api/teacher/course", chapterRoute);
 // teacher la chapter ma lesson add
-app.use("/app/teacher/course", lessonsRoute);
+app.use("/api/teacher/course", lessonRoute);
 
 // student related
 app.use("/api/student", studentInstituteRouter);
+// student cart related
+app.use("/api/student", studentCart);
 
 export default app;

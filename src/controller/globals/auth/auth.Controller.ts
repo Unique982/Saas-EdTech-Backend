@@ -9,7 +9,7 @@ import { Request, Response } from "express";
 import User from "../../../database/models/user.Model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import generaterJWTTOken from "../../../services/generateJWTToken";
+import generaterJWTToken from "../../../services/generateJWTToken";
 
 // const registerUser = async (req: Request, res: Response) => {
 //   const { username, email, password } = req.body;
@@ -61,7 +61,7 @@ class AuthController {
         });
         return;
       }
-      const { email, role, password } = req.body;
+      const { email, password } = req.body;
       if (!email || !password) {
         res.status(400).json({ message: "All filed require" });
         return;
@@ -85,7 +85,7 @@ class AuthController {
       // const token = jwt.sign({ id: existUser.id }, "token", {
       //   expiresIn: "7d",
       // });
-      const token = generaterJWTTOken({ id: existUser.id });
+      const token = generaterJWTToken({ id: existUser.id });
       // const token = generaterJWTTOken({ id: existUser.id });
       res.status(200).json({
         message: "Login successfully!",

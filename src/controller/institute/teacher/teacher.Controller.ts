@@ -5,10 +5,11 @@ import generatedRandomPassword from "../../../services/generateRandomPassword";
 
 import { QueryTypes } from "sequelize";
 import sendMail from "../../../services/sendEmail";
+import User from "../../../database/models/user.Model";
 
 class TeacherController {
   static createTeacher = async (req: IExtendedRequest, res: Response) => {
-    const institueNumber = req.user?.currentInstituteNumber;
+    const instituteNumber = req.user?.currentInstituteNumber;
 
     const {
       teacherName,
@@ -36,7 +37,7 @@ class TeacherController {
     // password generatad function
     const data = generatedRandomPassword(teacherName);
     await sequelize.query(
-      `INSERT INTO teacher_${institueNumber}(teacherName,teacherPhoneNumber,teacherEmail,teacherExperience,teacherAddress,salary,joinedDate,teacherPhoto,teacherPassword,	teacherInstituteNumber,courseId) VALUES(?,?,?,?,?,?,?,?,?,?,?)`,
+      `INSERT INTO teacher_${instituteNumber}(teacherName,teacherPhoneNumber,teacherEmail,teacherExperience,teacherAddress,salary,joinedDate,teacherPhoto,teacherPassword,	teacherInstituteNumber,courseId) VALUES(?,?,?,?,?,?,?,?,?,?,?)`,
       {
         type: QueryTypes.INSERT,
         replacements: [
@@ -49,13 +50,14 @@ class TeacherController {
           joinedDate,
           teacherPhoto,
           data.hashedVersion,
-          institueNumber,
+          instituteNumber,
           courseId,
         ],
       }
     );
+
     const teacherData: { id: string }[] = await sequelize.query(
-      `SELECT id FROM teacher_${institueNumber} WHERE teacherEmail = ?`,
+      `SELECT id FROM teacher_${instituteNumber} WHERE teacherEmail = ?`,
       {
         type: QueryTypes.SELECT,
         replacements: [teacherEmail],
@@ -63,7 +65,7 @@ class TeacherController {
     );
     console.log(teacherData, "teacherData");
     await sequelize.query(
-      `UPDATE course_${institueNumber} SET teacherId=? WHERE id=?`,
+      `UPDATE course_${instituteNumber} SET teacherId=? WHERE id=?`,
       {
         type: QueryTypes.UPDATE,
         replacements: [teacherData[0].id, courseId],
@@ -95,7 +97,7 @@ class TeacherController {
       <ul class="mb-4 text-sm list-disc pl-5 space-y-1">
         <li><strong>Email:</strong> ${teacherEmail}</li>
         <li><strong>Password:</strong> ${data.planVersion}</li>
-        <li><strong>Institute Number:</strong> ${institueNumber}</li>
+        <li><strong>Institute Number:</strong> ${instituteNumber}</li>
       </ul>
 
       <!-- Login Button -->
@@ -133,32 +135,33 @@ class TeacherController {
 
   // get teacher
   static getTeachers = async (req: IExtendedRequest, res: Response) => {
-    const institueNumber = req.user?.currentInstituteNumber;
-    const teachers = await sequelize.query(
-      `SELECT t.*, c.courseName FROM teacher_${institueNumber} AS t JOIN course_${institueNumber} AS c ON t.courseId = c.id`,
-      {
-        type: QueryTypes.SELECT,
-      }
+    const instituteNumber = req.user?.currentInstituteNumber;
+    const [teachers] = await sequelize.query(
+      `SELECT t.*, c.courseName FROM teacher_${instituteNumber} AS t LEFT JOIN course_${instituteNumber} AS c ON t.courseId = c.id`
     );
+
     res.status(200).json({ message: "teahers fetch", data: teachers });
   };
 
   // delete teacher
   static deleteTeachers = async (req: IExtendedRequest, res: Response) => {
-    const institueNumber = req.user?.currentInstituteNumber;
+    const instituteNumber = req.user?.currentInstituteNumber;
     const id = req.params.id;
-    await sequelize.query(`DELETE FROM teacher_${institueNumber} WHERE id =?`, {
-      type: QueryTypes.DELETE,
-      replacements: [id],
-    });
+    await sequelize.query(
+      `DELETE FROM teacher_${instituteNumber} WHERE id =?`,
+      {
+        type: QueryTypes.DELETE,
+        replacements: [id],
+      }
+    );
     res.status(200).json({ message: "Delete teacher successfully" });
   };
 
   static singleTeachers = async (req: IExtendedRequest, res: Response) => {
-    const institueNumber = req.user?.currentInstituteNumber;
+    const instituteNumber = req.user?.currentInstituteNumber;
     const id = req.params.id;
     const teachers = await sequelize.query(
-      `SELECT * FROM teacher_${institueNumber} WHERE id=?`,
+      `SELECT * FROM teacher_${instituteNumber} WHERE id=?`,
       {
         type: QueryTypes.SELECT,
         replacements: [id],
@@ -171,7 +174,7 @@ class TeacherController {
 
   // update teacher record
   static updateTeachers = async (req: IExtendedRequest, res: Response) => {
-    const institueNumber = req.user?.currentInstituteNumber;
+    const instituteNumber = req.user?.currentInstituteNumber;
     const id = req.params.id;
     const {
       teacherName,
@@ -198,7 +201,7 @@ class TeacherController {
     const teacherPhoto = req.file ? req.file.path : "https://uniqe.png";
     // password generatad function
     await sequelize.query(
-      `UPDATE teacher_${institueNumber} SET teacherName=?,teacherPhoneNumber=?,teacherEmail=?,teacherExperties=?,teacherAddress=?,salary=?,joinedDate=?,teacherPhoto=?,courseId=? WHERE id =?`,
+      `UPDATE teacher_${instituteNumber} SET teacherName=?,teacherPhoneNumber=?,teacherEmail=?,teacherExperties=?,teacherAddress=?,salary=?,joinedDate=?,teacherPhoto=?,courseId=? WHERE id =?`,
       {
         type: QueryTypes.UPDATE,
         replacements: [

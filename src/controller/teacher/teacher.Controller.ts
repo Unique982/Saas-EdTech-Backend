@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import sequelize from "../../database/connection";
 import { QueryTypes } from "sequelize";
 import bcrypt from "bcrypt";
-import generaterJWTTOken from "../../services/generateJWTToken";
-import { IExtendedRequest } from "../../middleware/type";
+import generaterJWTToken from "../../services/generateJWTToken";
+
 // inteface ho
 interface ITeacherData {
   id: string;
@@ -11,13 +11,13 @@ interface ITeacherData {
 }
 class LoginSystem {
   static teacherLogin = async (req: Request, res: Response) => {
-    const { teacherEmail, teacherPassword, teacherInstituetNumber } = req.body;
+    const { teacherEmail, teacherPassword, teacherInstituteNumber } = req.body;
     // data aaya xa ki nai check garnu paro
-    if (!teacherEmail || !teacherPassword || !teacherInstituetNumber) {
-      return res.status(400).json({ message: "Plase provide al" });
+    if (!teacherEmail || !teacherPassword || !teacherInstituteNumber) {
+      return res.status(400).json({ message: "Plase provide all" });
     }
     const teacherData: ITeacherData[] = await sequelize.query(
-      `SELECT * FROM teacher_${teacherInstituetNumber} WHERE teacherEmail =?`,
+      `SELECT * FROM teacher_${teacherInstituteNumber} WHERE teacherEmail =?`,
       {
         type: QueryTypes.SELECT,
         replacements: [teacherEmail],
@@ -37,15 +37,15 @@ class LoginSystem {
       res.status(400).json({ message: "invalid Credentails" });
     } else {
       // token generation
-      const token = generaterJWTTOken({
+      const token = generaterJWTToken({
         id: teacherData[0].id,
-        institueNumber: teacherInstituetNumber,
+        institueNumber: teacherInstituteNumber,
       });
       res.status(200).json({
         message: "Teacher login successfully!",
         data: {
           teacherToken: token,
-          teacherInstituetNumber,
+          teacherInstituteNumber,
           teacherEmail,
         },
       });

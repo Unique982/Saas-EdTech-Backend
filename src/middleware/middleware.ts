@@ -44,6 +44,19 @@ class Middleware {
       console.log(err);
     }
   }
+  static changeUserIdForTableName = (
+    req: IExtendedRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    console.log(req.user, "Request user outside");
+    if (req.user && req.user.id) {
+      const newUserId = req.user.id.split("-").join("_");
+      req.user = { id: newUserId, role: req.user.role };
+      console.log(req.user, "Request id");
+    }
+    next();
+  };
 
   static redrictTo = (...role: UserRole[]) => {
     // array form ma data basxa ["teacher","student","institute"]

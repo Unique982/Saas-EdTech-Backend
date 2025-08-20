@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import sequelize from "../../../database/connection";
 import { IExtendedRequest } from "../../../middleware/type";
+import { QueryTypes } from "sequelize";
 
 class CourseController {
   // add course
@@ -42,6 +43,23 @@ class CourseController {
           teacherId,
           categoryId,
         ],
+      }
+    );
+
+    const courseData: { id: string }[] = await sequelize.query(
+      `SELECT id FROM course_${instituteNumber} WHERE courseName = ?`,
+      {
+        type: QueryTypes.SELECT,
+        replacements: [courseName],
+      }
+    );
+    // aba course teacher lai a sign gary paxi teacher vanna table ma courseId xa field ko nam tya update hunxa
+
+    await sequelize.query(
+      `UPDATE teacher_${instituteNumber} SET courseId=? WHERE id=?`,
+      {
+        type: QueryTypes.UPDATE,
+        replacements: [courseData[0].id, teacherId],
       }
     );
     res.status(200).json({ message: "create course successfully" });

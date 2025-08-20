@@ -1,6 +1,6 @@
 import { QueryTypes } from "sequelize";
 import sequelize from "../../../database/connection";
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 
 class StudentInstitute {
   static listInstitute = async (req: Request, res: Response) => {

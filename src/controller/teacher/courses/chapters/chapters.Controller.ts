@@ -9,7 +9,7 @@ class Chapter {
     const { courseId } = req.params;
     const { chapterName, chapterDuration, chapterLevel } = req.body;
 
-    if (!chapterName || !chapterDuration || chapterLevel) {
+    if (!chapterName || !chapterDuration || !chapterLevel) {
       return res.status(400).json({ message: "All field are required" });
     }
     // course table id check garna
@@ -55,7 +55,7 @@ class Chapter {
     if (!courseId) {
       return res.status(400).json("Course id provide");
     }
-    const [data] = await sequelize.query(
+    const data = await sequelize.query(
       `SELECT * FROM course_chapter_${institueNumber} WHERE courseId = ?`,
       {
         replacements: [courseId],
@@ -71,19 +71,22 @@ class Chapter {
 
   // delete course chapter
   static deleteCourseChapter = async (req: IExtendedRequest, res: Response) => {
-    const { courseId } = req.params;
+    const { courseId, chapterId } = req.params;
     const instituteNumber = req.user?.currentInstituteNumber;
-    const { chapterId } = req.params;
+
     if (!courseId) {
       return res.status(400).json({ message: "Plase course id provide!" });
     }
-    const [data] = await sequelize.query(
+    const data = await sequelize.query(
       `SELECT * FROM course_chapter_${instituteNumber} WHERE id=?`,
       {
         replacements: [chapterId],
         type: QueryTypes.SELECT,
       }
     );
+    if (data.length === 0) {
+      return res.status(404).json({ message: "chapter not found" });
+    }
     await sequelize.query(
       `DELETE  FROM course_chapter_${instituteNumber} WHERE id =?`,
       {

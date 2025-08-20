@@ -9,22 +9,20 @@ chapterRoute
   .route("/:courseId/chapter/")
   .post(
     Middleware.isLoggedIn,
-    Middleware.redrictTo(UserRole.Teacher),
+    // Middleware.redrictTo(UserRole.Teacher),
     asyncErrorHandler(Chapter.addChapter)
   )
   .get(
     Middleware.isLoggedIn,
-    Middleware.redrictTo(UserRole.Teacher),
+    // Middleware.redrictTo(UserRole.Teacher),
     asyncErrorHandler(Chapter.fetchCourseChapter)
   );
 
 // delete/single/edit
-chapterRoute
-  .route("/:courseId/chapter:id/")
-  .delete(
-    Middleware.isLoggedIn,
-    Middleware.redrictTo(UserRole.Teacher),
-    asyncErrorHandler(Chapter.deleteCourseChapter)
-  );
+chapterRoute.route("/:courseId/chapter/:id/").delete(
+  Middleware.isLoggedIn,
+  // Middleware.redrictTo(UserRole.Teacher),
+  asyncErrorHandler(Chapter.deleteCourseChapter)
+);
 
 export default chapterRoute;

@@ -6,12 +6,12 @@ import { QueryTypes } from "sequelize";
 class Lessons {
   static createCourseLession = async (req: IExtendedRequest, res: Response) => {
     const institueNumber = req.user?.currentInstituteNumber;
+    const chapterId = req.params;
     const {
       lessonName,
       lessonDescription,
       lessonThumbnailURL,
       lessonVideoURL,
-      chapterId,
     } = req.body;
     if (
       !lessonName ||
