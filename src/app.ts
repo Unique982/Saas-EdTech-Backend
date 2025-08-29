@@ -29,8 +29,12 @@ import chapterRoute from "./routes/teacher/course/chapter/course-chapter.Route";
 import lessonRoute from "./routes/teacher/course/lesson/course-lesson.Route";
 
 // Student related router
+// list all insitute api call
 import studentInstituteRouter from "./routes/student/institute/student-institute.Route";
+// cart
 import studentCart from "./routes/student/cart/student-cart.Route";
+// order
+import studentOrder from "./routes/student/order/student-order.Route";
 
 // institute ko api
 app.use("/api/institute", instituteRouter);
@@ -49,11 +53,12 @@ app.use("/api/teacher/login", teacherRoute);
 // teacher la add garna course ko chapter
 app.use("/api/teacher/course", chapterRoute);
 // teacher la chapter ma lesson add
-app.use("/api/teacher/course", lessonRoute);
+app.use("/api/teacher/course/", lessonRoute);
 
 // student related
 app.use("/api/student", studentInstituteRouter);
 // student cart related
 app.use("/api/student", studentCart);
+app.use("/api/student", studentOrder);
 
 export default app;

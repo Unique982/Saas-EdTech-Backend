@@ -4,11 +4,11 @@ import User from "../database/models/user.Model";
 import { IExtendedRequest, UserRole } from "./type";
 
 class Middleware {
-  static async isLoggedIn(
+  static isLoggedIn = async (
     req: IExtendedRequest,
     res: Response,
     next: NextFunction
-  ): Promise<void> {
+  ) => {
     // check if login or not
     // token accept
     // verify garne
@@ -43,7 +43,7 @@ class Middleware {
     } catch (err) {
       console.log(err);
     }
-  }
+  };
   static changeUserIdForTableName = (
     req: IExtendedRequest,
     res: Response,
@@ -58,12 +58,13 @@ class Middleware {
     next();
   };
 
-  static redrictTo = (...role: UserRole[]) => {
+  static restrictTo = (...roles: UserRole[]) => {
     // array form ma data basxa ["teacher","student","institute"]
     return (req: IExtendedRequest, res: Response, next: NextFunction) => {
       // requesting user ko role k xa tyoe liney ani parameter ma pass garna
-      let UserRole = req.user?.role as UserRole;
-      if (role.includes(UserRole)) {
+      let userRole = req.user?.role as UserRole;
+      console.log(req.user?.role, "redirect");
+      if (roles.includes(userRole)) {
         // filter gray ko ho include ma la chai array ma tyo data xa ki nai vana rw check garxa
         next();
       } else {

@@ -1,9 +1,15 @@
-import { Table, Column, Model, DataType } from "sequelize-typescript";
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  PrimaryKey,
+} from "sequelize-typescript";
 import { UserRole } from "../../middleware/type";
 
 @Table({
   tableName: "users",
-  modelName: "user",
+  modelName: "User",
   timestamps: true,
 })
 class User extends Model {

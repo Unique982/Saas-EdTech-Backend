@@ -11,14 +11,14 @@ studentCart
   .post(
     Middleware.isLoggedIn,
     Middleware.changeUserIdForTableName,
-    Middleware.redrictTo(UserRole.Student),
+    // Middleware.restrictTo(UserRole.Student),
     asyncErrorHandler(StudentCart.insertIntocartTableStudent)
   )
   // get method
   .get(
     Middleware.isLoggedIn,
     Middleware.changeUserIdForTableName,
-    Middleware.redrictTo(UserRole.Student),
+    Middleware.restrictTo(UserRole.Student),
     asyncErrorHandler(StudentCart.fetchStudentCartItem)
   );
 studentCart
@@ -27,7 +27,7 @@ studentCart
   .delete(
     Middleware.isLoggedIn,
     Middleware.changeUserIdForTableName,
-    Middleware.redrictTo(UserRole.Student),
+    Middleware.restrictTo(UserRole.Student),
     asyncErrorHandler(StudentCart.deleteStudentCartItem)
   );
 

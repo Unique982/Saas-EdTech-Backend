@@ -16,10 +16,7 @@ class StudentCart {
     }
 
     await sequelize.query(
-      `CREATE TABLE IF NOT EXISTS student_cart_${userId}(id VARCHAR PRIMARY KEY DEFAULT (UUID()),courseId VARCHAR(36) REFERENCES course_${instituteId}(id), institute VARCHAR(36) REFERENCES institute_${instituteId}(id),
-      userId VARCHAR(36) REFERENCES users(id),
-      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)`
+      `CREATE TABLE IF NOT EXISTS student_cart_${userId}(id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),courseId VARCHAR(36) REFERENCES course_${instituteId}(id), instituteId VARCHAR(36) REFERENCES institute_${instituteId}(id),userId VARCHAR(36) REFERENCES users(id),createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)`
     );
 
     // insert query
